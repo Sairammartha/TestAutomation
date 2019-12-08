@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Suite">
+
+    <test name="CloudElements">
+        <parameter name="firstName" value="Test"/>
+        <parameter name="lastName" value="Automation"/>
+        <parameter name="emailId" value="testautomation@gmail.com"/>
+        <parameter name="password" value="demo@132"/>
+
+        <classes>
+            <class name="test.java.CloudElements"/>
+        </classes>
+    </test>
+    <test name="GoogleDriveUI">
+        <parameter name="url" value="https://drive.google.com/drive/my-drive"/>
+        <parameter name="emailId" value="mcrautomation1@gmail.com"/>
+        <parameter name="password" value="Q29rZUAxMjM="/>
+        <parameter name="file" value="Upload.txt"/>
+
+        <classes>
+            <class name="test.java.GoogleDriveUI"/>
+        </classes>
+    </test>
+    <test name="GoogleDriveAPI">
+        <parameter name="contentType" value="image/jpg"/>
+        <parameter name="fileName" value="image.jpg"/>
+        <parameter name="customFileName" value="image.jpg"/>
+        <classes>
+            <class name="test.java.GoogleDriveAPI"/>
+        </classes>
+    </test>
+
+
+</suite>
