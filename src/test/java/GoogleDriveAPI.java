@@ -40,6 +40,7 @@ public class GoogleDriveAPI extends Framework {
     private static final List<String> SCOPES = Collections.singletonList(DriveScopes.DRIVE);
     private static Drive driveService;
     private static String fieldID;
+    private static String folderId;
 
     /**
      * Creates an authorized Credential object.
@@ -100,7 +101,7 @@ public class GoogleDriveAPI extends Framework {
         // Print the names and IDs for up to 10 files.
         FileList result = null;
         try {
-            result = drive.files().list().setPageSize(20).setFields("nextPageToken, files(id, name)").execute();
+            result = drive.files().list().setFields("nextPageToken, files(id, name)").execute();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -110,6 +111,8 @@ public class GoogleDriveAPI extends Framework {
         } else {
             System.out.println("Files:");
             for (File file : files) {
+                if(!file.getName().contains("."))
+                    folderId=file.getId();
                 System.out.println(file.getName() + " File with Id " + file.getId());
                 reportPass("Verify the Google Drive files", " Files should be displayed  ", file.getName() + " file is displayed ");
             }
@@ -146,9 +149,11 @@ public class GoogleDriveAPI extends Framework {
         java.io.File uploadFile = new java.io.File(System.getProperty("user.dir") + "//resources//" + fileName);
         AbstractInputStreamContent uploadStreamContent = new FileContent(contentType, uploadFile);
         File fileMetadata = new File();
-        fileMetadata.setName(customFileName);
-        Drive driveService = getDriveService();
 
+        fileMetadata.setName(customFileName);
+        fileMetadata.setParents(Collections.singletonList(folderId));
+
+        Drive driveService = getDriveService();
         File file = null;
         try {
             file = driveService.files().create(fileMetadata, uploadStreamContent)
