@@ -54,6 +54,7 @@ public class GoogleDriveUI extends Framework {
         waitForPageLoad();
         clickElement(googleDrivePage.getNewButton());
         clickElement(googleDrivePage.getFileUpload());
+        Thread.sleep(5000);
         String strPath = System.getProperty("user.dir") + "\\resources\\" + file;
         strPath = "\"" + strPath + "\"";
         String autoITExecutable = System.getProperty("user.dir") + "\\resources\\drivers\\AutoItFileUpload.exe " + strPath;
@@ -64,7 +65,7 @@ public class GoogleDriveUI extends Framework {
             e.printStackTrace();
         }
         waitForPageLoad();
-        Thread.sleep(5000);
+        Thread.sleep(10000);
         waitUntilElementPresent(googleDrivePage.getVerifyUpload());
         if (googleDrivePage.getVerifyFile().getAttribute("data-tooltip").equals(file))
             reportPass("Verify the upload file", " Files should be uploaded  ", file + " file is uploaded ");
@@ -91,9 +92,9 @@ public class GoogleDriveUI extends Framework {
         File file = new File(System.getProperty("user.dir") + "//resources//downloads");
         for (File f : file.listFiles()) {
             if (f.getName().equals(fileName))
-                reportPass("Verify the downloaded file ", " File should be downloaded ", "File downloaded successfully ");
+                reportPass("Verify the downloaded file ", " File should be downloaded ", fileName+"File downloaded successfully ");
             else
-                reportPass("Verify the downloaded file ", " File should be downloaded ", "File not downloaded");
+                reportPass("Verify the downloaded file ", " File should be downloaded ", fileName+"File not downloaded");
 
         }
     }

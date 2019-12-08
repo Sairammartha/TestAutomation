@@ -79,7 +79,7 @@ public class CloudElements extends Framework {
         setValue(homePage.getForgotEmail(), emailId);
         clickElement(homePage.getResetPasswordButton());
         waitForPageLoad();
-        Thread.sleep(2000);
+        Thread.sleep(5000);
         waitUntilElementPresent(homePage.getResetPasswordMessage());
         if (homePage.getResetPasswordMessage().getText().equalsIgnoreCase("Thanks! Please check your email for your password reset link"))
             reportPass("Verify the Reset Password Message ", " Reset Password Message should be displayed ", " Reset Password Message verified successfully ");
