@@ -13,6 +13,7 @@ import org.apache.commons.codec.binary.Base64;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.List;
 
 public class GoogleDriveUI extends Framework {
 
@@ -28,7 +29,7 @@ public class GoogleDriveUI extends Framework {
         clickElement(googleDrivePage.getNextButton());
         Thread.sleep(2000);
         waitForPageLoad();
-        setValue(googleDrivePage.getPassword(),new String(Base64.decodeBase64(password)));
+        setValue(googleDrivePage.getPassword(), new String(Base64.decodeBase64(password)));
         clickElement(googleDrivePage.getNextButton());
         waitForPageLoad();
         Thread.sleep(5000);
@@ -41,10 +42,25 @@ public class GoogleDriveUI extends Framework {
     }
 
     @Test(priority = 1)
-    public void getFilesGDrive() {
+    public void getFilesGDrive() throws InterruptedException {
         waitForPageLoad();
-        for (WebElement element : googleDrivePage.getFilesDetails()) {
-            reportPass("Verify the Google Drive file", " Files should be displayed  ", element.getAttribute("data-tooltip") + " file is displayed ");
+        List<WebElement> elementList = googleDrivePage.getFilesDetails();
+        for (int i = 0; i < elementList.size(); i++) {
+            reportPass("Verify the Google Drive file", " Files should be displayed  ", elementList.get(i).getAttribute("data-tooltip") + " file is displayed ");
+            if (!elementList.get(i).getAttribute("data-tooltip").contains(".")) {
+                Actions actions = new Actions(driver);
+                actions.doubleClick(elementList.get(i)).build().perform();
+                waitForPageLoad();
+                Thread.sleep(2000);
+                reportPass("Verify the navigation", " user should be navigate between folders  ", "Navigated between folders successfully ");
+                driver.navigate().back();
+                Thread.sleep(1000);
+                waitForPageLoad();
+                driver.navigate().refresh();
+                waitForPageLoad();
+                Thread.sleep(2000);
+                elementList = googleDrivePage.getFilesDetails();
+            }
         }
     }
 
@@ -92,9 +108,9 @@ public class GoogleDriveUI extends Framework {
         File file = new File(System.getProperty("user.dir") + "//resources//downloads");
         for (File f : file.listFiles()) {
             if (f.getName().equals(fileName))
-                reportPass("Verify the downloaded file ", " File should be downloaded ", fileName+"File downloaded successfully ");
+                reportPass("Verify the downloaded file ", " File should be downloaded ", fileName + "File downloaded successfully ");
             else
-                reportPass("Verify the downloaded file ", " File should be downloaded ", fileName+"File not downloaded");
+                reportPass("Verify the downloaded file ", " File should be downloaded ", fileName + "File not downloaded");
 
         }
     }
