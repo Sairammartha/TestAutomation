@@ -60,6 +60,7 @@ public class Framework {
 
     @BeforeTest
     public void beforeTest(ITestContext testContext) {
+
         testParent = extent.createTest(testContext.getName());
     }
 
